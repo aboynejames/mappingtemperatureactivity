@@ -1,0 +1,40 @@
+{
+    "name" : "mappertempactivity",
+    "description" : "predicting temperature activity predictions",
+    "homepage": "https://github.com/aboynejames/mappingtemperatureactivity",
+    "version" : "0.1.1",
+    "author" : "James Littlejohn <james@aboynejames.co.uk> (https://twitter.com/aboynejames)",
+    "keywords": [
+        "self",
+        "sensors",
+        "understanding",
+        "data"
+    ],
+    "contributors": [
+    ],
+"scripts" : {
+        "test" : "node_modules/.bin/buster-test -r specification"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aboynejames/mappingtemperatureactivity"
+    },
+    "bugs": {
+        "url": "https://github.com/aboynejames/mappingtemperatureactivity/issues"
+    },
+    "main": "./src/startdapp.js",
+    "license": "MIT (http://)",
+    "devDependencies" : {
+        "buster" : ">=0.6.1",
+	"casperjs" : ">=1.1.0-beta3"
+    },
+    "engines" : {
+        "node" : ">=0.10"
+    },
+    "dependencies" : {
+    "influx" : "4.0.1",
+    "leveldown" : "1.4.1",
+    "levelup" : "1.2.1"
+  }
+}
+
