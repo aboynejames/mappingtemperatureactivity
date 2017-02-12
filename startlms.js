@@ -13,3 +13,5 @@ var LMSpredictions = require("./lms-prediction.js");
 
 var LMSlive = new LMSpredictions();
 console.log(LMSlive);
+
+

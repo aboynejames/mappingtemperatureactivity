@@ -1,7 +1,7 @@
 /**
 * SelfEngine
 *
-* prediction analystics
+* Least mean square  regression analysis
 * @class selfprediction
 *
 * @package    selfengine  open source project
@@ -9,47 +9,37 @@
 * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 * @version    $Id$
 */
-var selfprediction = function() {
-	
-	this.predictiondataout = {};
-	
+var LMScompute = function(dataIN, ppIN) {
+
+	this.dataIN = dataIN;
+	this.ppIN = ppIN;
+	this.predictiondataout = [];
+
 };
 
 /**
 *  Set the context
-* @method mappingContext		
+* @method mappingContext
 *
-*/	
-selfprediction.prototype.mappingContext = function(livecontextdata) {
+*/
+LMScompute.prototype.mappingContext = function() {
 
-		
+
 };
 
-
-
 /**
-*  Request data from Mapping Protocol
-* @method predictionout		
+*  Perform LMS Computation
+* @method startCPU
 *
-*/	
-selfprediction.prototype.mappingContext = function(livecontextdata) {
+*/
+LMScompute.prototype.startCPU = function(dataIN, ppIN) {
 
-		
-};
-
-
-/**
-*  Mapper Prection Computation
-* @method MapperCompute		
-*
-*/	
-selfprediction.prototype.MapperCompute = function() {
-
+	localdata = dataIN;
 	var datainx = [];
 	var datainy = [];
 
 		// for now form x array and y array to feed sums below
-	livepredictiondata.forEach(function(xypairs) {
+	localdata.forEach(function(xypairs) {
 
 		datainx.push(xypairs[0]);
 		datainy.push(xypairs[1]);
@@ -80,7 +70,7 @@ selfprediction.prototype.MapperCompute = function() {
 	var sdeviationx = [];
 	var sdeviationsquaredarr = [];
 	datainx.forEach(function(xnum) {
-		
+
 		var sdeviationsquared = Math.pow((xnum - meanx),2);
 		sdeviationsquaredarr.push(sdeviationsquared);
 		sdeviationx.push(xnum - meanx);
@@ -100,7 +90,7 @@ selfprediction.prototype.MapperCompute = function() {
 	var sdeviationy = [];
 	var sdeviationsquaredarry = [];
 	datainy.forEach(function(ynum) {
-		
+
 		var sdeviationsquaredy = Math.pow((ynum - meany),2);
 		sdeviationsquaredarry.push(sdeviationsquaredy);
 		sdeviationy.push(ynum - meany);
@@ -149,51 +139,58 @@ selfprediction.prototype.MapperCompute = function() {
 
 	// take todays date and add 10 years
 	var startdateprediction = new Date().valueOf();
-	var tenyeartimeframe = [1,2,3,4,5,6,7,8,9,10];
+	var timeframePrediction = ppIN;
 	var yearinmilliseconds = 31536000000;
 
 	var regx = [];
 
-	tenyeartimeframe.forEach(function(yearno) {
+	timeframePrediction.forEach(function(yearno) {
 
 		regx.push(startdateprediction + (yearno * yearinmilliseconds));
-		
+
 	});
 
 	var regy = '';
 	var regxy = [];
 
 	regx.forEach(function(rx) {
-		
+
 		regy = ((beta*rx) + crossy);
 		regxy.push([rx, regy]);
-		
+
 	});
 
-	// regression line co ordinates
-	this.mppmChart2d(regxy, elementpart, totalelements, attentionfixin);
-	
+	return regxy;
+
+	//this.predictiondataout = regxy;
+	//this.predictionout();
+	//this.DmPPSubmit();
 };
 
 /**
-*  Submit MPPM prediction path data to Protocol ie resolution node
-* @method mppmSubmit		
+*  Return the prediction path
+* @method predictionout
 *
-*/	
-selfprediction.prototype.mppmSubmit = function() {
-	
+*/
+LMScompute.prototype.predictionout = function() {
+	// given prection model LMS  produce a prediciton path
+
+
+	this.DmPPSubmit();
+
+};
+
+/**
+*  Submit Dmpath prediction path data to Protocol ie resolution node
+* @method DmPPSubmit
+*
+*/
+LMScompute.prototype.DmPPSubmit = function() {
+
 	// make Mapping Protocol Submission call
-	//this.MAPPINGPROTOCOL(this.predictiondataout);
-
-};	
-
-
-/**
-*  Charting helper function 2d chart linear colleration chart
-* @method mppmChart2d		
-*
-*/	
-selfprediction.prototype.mppmChart2d = function() {
-
+	return this.predictiondataout;
 
 };
+
+
+module.exports = LMScompute;
